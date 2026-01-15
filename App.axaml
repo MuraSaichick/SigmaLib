@@ -1,0 +1,57 @@
+﻿<Application xmlns="https://github.com/avaloniaui"
+             xmlns:local="using:SigmaLib"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:SigmaLib.ViewModels"
+             xmlns:views="clr-namespace:SigmaLib.Views"
+             x:Class="SigmaLib.App"
+             RequestedThemeVariant="Light">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.Styles>
+        <FluentTheme />
+    </Application.Styles>
+    <Application.DataTemplates>
+		<DataTemplate x:DataType="vm:LoginViewModel">
+			<views:LoginView/>
+        </DataTemplate>
+        <DataTemplate x:DataType="vm:RegistrationViewModel">
+			<views:RegistrationView/>
+        </DataTemplate>
+        <DataTemplate x:DataType="vm:UserManagementViewModel">
+			<views:UserManagementView/>
+        </DataTemplate>
+        <DataTemplate x:DataType="vm:BookSearchViewModel">
+			<views:BookSearchView/>
+        </DataTemplate>
+        <DataTemplate x:DataType="vm:AdminMainMenuViewModel">
+			<views:AdminMainMenuView/>
+        </DataTemplate>
+        <DataTemplate x:DataType="vm:LibrarianMainMenuViewModel">
+			<views:LibrarianMainMenuView/>
+        </DataTemplate>
+        <DataTemplate x:DataType="vm:ReaderMainMenuViewModel">
+			<views:ReaderMainMenuView/>
+        </DataTemplate>
+        <DataTemplate x:DataType="vm:ProfileViewModel">
+			<views:ProfileView/>
+        </DataTemplate>
+        <DataTemplate x:DataType="vm:BookManagementViewModel">
+			<views:BookManagementView/>
+        </DataTemplate>
+        <DataTemplate x:DataType="vm:ReservationManagementViewModel">
+			<views:ReservationManagementView/>
+        </DataTemplate>
+        <DataTemplate x:DataType="vm:ReaderReservationsViewModel">
+			<views:ReaderReservationsView/>
+        </DataTemplate>
+        <DataTemplate x:DataType="vm:ReaderManagementViewModel">
+			<views:ReaderManagementView/>
+        </DataTemplate>
+        <DataTemplate x:DataType="vm:LibrarianProcessedReservationsViewModel">
+			<views:LibrarianProcessedReservationsView/>
+        </DataTemplate>
+        <DataTemplate x:DataType="vm:LibraryStatsViewModel">
+			<views:LibraryStatsView/>
+        </DataTemplate>
+    </Application.DataTemplates>
+</Application>

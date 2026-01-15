@@ -1,0 +1,378 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:SigmaLib.ViewModels"
+             xmlns:conv="clr-namespace:SigmaLib.Converters"
+             mc:Ignorable="d" 
+             x:Class="SigmaLib.Views.BookManagementView"
+             x:DataType="vm:BookManagementViewModel">
+
+    <UserControl.Resources>
+		<conv:ReservableStatusConverter x:Key="ReservableStatusConverter"/>
+		<conv:BoolToBrushConverter x:Key="BoolToBrushConverter"/>
+		<conv:StringIsNotEmptyToBoolConverter x:Key="StringIsNotEmptyToBoolConverter"/>
+    </UserControl.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+       <!-- Панель поиска и фильтров -->
+<Border Grid.Row="0"
+        BorderBrush="LightGray"
+        BorderThickness="0,0,0,1"
+        Padding="15"
+        Margin="0,0,0,10"
+        CornerRadius="6">
+    <StackPanel>
+        <!-- Заголовок -->
+        <TextBlock Text="Управление каталогом"
+                   FontSize="18"
+                   FontWeight="Bold"
+                   Foreground="DarkSlateGray"
+                   Margin="0,0,0,15"/>
+
+        <!-- Основные поля -->
+        <Grid Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                <TextBlock Text="Название:" Margin="0,0,0,5"/>
+                <TextBox Text="{Binding SelectedTitle}" Height="28" Padding="5"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Margin="0,0,10,0">
+                <TextBlock Text="Автор:" Margin="0,0,0,5"/>
+                <TextBox Text="{Binding SelectedAuthor}" Height="28" Padding="5"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Дополнительные фильтры -->
+        <Grid Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                <TextBlock Text="Жанр:" Margin="0,0,0,5"/>
+                <TextBox Text="{Binding SelectedGenre}" Height="28" Padding="5"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Margin="0,0,10,0">
+                <TextBlock Text="Год:" Margin="0,0,0,5"/>
+                <TextBox Text="{Binding SelectedYear}" Height="28" Padding="5"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Кнопки -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+            <Button Content="Поиск"
+                    Width="100"
+                    Height="32"
+                    Background="LightSteelBlue"
+                    Command="{Binding SearchCommand}"/>
+
+            <Button Content="Создать книгу"
+                    Width="120"
+                    Height="32"
+                    Background="LightGreen"
+                    Command="{Binding CreateNewBookCommand}"/>
+        </StackPanel>
+    </StackPanel>
+</Border>
+        
+        <!-- Список книг -->
+        <ScrollViewer Grid.Row="2">
+   <ItemsControl ItemsSource="{Binding Books}" x:Name="ListBooks"
+              Margin="0,10,0,0">
+    <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+            <WrapPanel Orientation="Horizontal"/>
+        </ItemsPanelTemplate>
+    </ItemsControl.ItemsPanel>
+    
+    <ItemsControl.ItemTemplate>
+        <DataTemplate>
+            <!-- Карточка книги -->
+            <Border Width="320" 
+                    Height="350"
+                    Margin="8" 
+                    BorderBrush="#e9ecef" 
+                    BorderThickness="1" 
+                    CornerRadius="8"
+                    Background="White"
+                    Padding="16">
+                <Border.Styles>
+                    <Style Selector="Border">
+                        <Setter Property="BoxShadow" Value="0 2 8 0.08 #000000"/>
+                    </Style>
+                </Border.Styles>
+                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <!-- Основная информация -->
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        
+                        <!-- Количества книг -->
+                        <RowDefinition Height="Auto"/>
+                        
+                        <!-- Управление бронированием -->
+                        <RowDefinition Height="Auto"/>
+                        
+                        <!-- Сообщение об ошибке/результате операции -->
+                        <RowDefinition Height="Auto"/>
+                        
+                        <!-- Разделитель -->
+                        <RowDefinition Height="Auto"/>
+                        
+                        <!-- Кнопки действий -->
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- === ОСНОВНАЯ ИНФОРМАЦИЯ О КНИГЕ === -->
+                    
+                    <!-- Название -->
+                    <TextBlock Grid.Row="0" 
+                               Text="{Binding Title}" 
+                               FontWeight="Bold" 
+                               FontSize="16"
+                               TextWrapping="Wrap"
+                               MaxHeight="48"
+                               TextTrimming="CharacterEllipsis"
+                               Margin="0,0,0,8"
+                               Foreground="#212529"/>
+                    
+                    <!-- Автор -->
+                    <StackPanel Grid.Row="1" 
+                                Orientation="Horizontal"
+                                Margin="0,0,0,6">
+                        <TextBlock Text="Автор:" 
+                                   FontWeight="SemiBold"
+                                   FontSize="13"
+                                   Foreground="#6c757d"
+                                   Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding Author}" 
+                                   FontSize="13"
+                                   Foreground="#495057"/>
+                    </StackPanel>
+                    
+                    <!-- Жанр и год -->
+                    <Grid Grid.Row="2" 
+                          ColumnDefinitions="*,*"
+                          ColumnSpacing="10"
+                          Margin="0,0,0,6">
+                        <StackPanel Grid.Column="0"
+                                    Orientation="Horizontal">
+                            <TextBlock Text="Жанр:" 
+                                       FontWeight="SemiBold"
+                                       FontSize="13"
+                                       Foreground="#6c757d"
+                                       Margin="0,0,5,0"/>
+                            <TextBlock Text="{Binding Genre}" 
+                                       FontSize="13"
+                                       Foreground="#495057"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal">
+                            <TextBlock Text="Год:" 
+                                       FontWeight="SemiBold"
+                                       FontSize="13"
+                                       Foreground="#6c757d"
+                                       Margin="0,0,5,0"/>
+                            <TextBlock Text="{Binding Year}" 
+                                       FontSize="13"
+                                       Foreground="#495057"/>
+                        </StackPanel>
+                    </Grid>
+                    
+                    <!-- Цена за просрочку -->
+                    <StackPanel Grid.Row="3" 
+                                Orientation="Horizontal"
+                                Margin="0,0,0,12">
+                        <TextBlock Text="Штраф за день:" 
+                                   FontWeight="SemiBold"
+                                   FontSize="13"
+                                   Foreground="#6c757d"
+                                   Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding Price, StringFormat='{}{0} руб.'}" 
+                                   FontSize="13"
+                                   Foreground="#dc3545"
+                                   FontWeight="SemiBold"/>
+                    </StackPanel>
+                    
+                    <!-- === КОЛИЧЕСТВО ЭКЗЕМПЛЯРОВ === -->
+                    <Grid Grid.Row="4" 
+                          ColumnDefinitions="*,*"
+                          Margin="0,0,0,12">
+                        <Border Grid.Column="0"
+                                Background="#e8f5e9"
+                                CornerRadius="6"
+                                Padding="8,6"
+                                Margin="0,0,4,0">
+                            <StackPanel Orientation="Vertical"
+                                        HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding TotalCopies}" 
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           Foreground="#2e7d32"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="Всего экз." 
+                                           FontSize="11"
+                                           Foreground="#4caf50"
+                                           HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Column="1"
+                                Background="#e3f2fd"
+                                CornerRadius="6"
+                                Padding="8,6"
+                                Margin="4,0,0,0">
+                            <StackPanel Orientation="Vertical"
+                                        HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding AvailableCopies}" 
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           Foreground="#1565c0"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="Доступно" 
+                                           FontSize="11"
+                                           Foreground="#2196f3"
+                                           HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                    
+                    <!-- === УПРАВЛЕНИЕ БРОНИРОВАНИЕМ === -->
+                    <StackPanel Grid.Row="5"
+                                Orientation="Horizontal"
+                                Margin="0,0,0,8"
+                                VerticalAlignment="Center">
+                        <CheckBox IsChecked="{Binding IsReservable, Mode=TwoWay}"
+                                  VerticalAlignment="Center"
+                                  Margin="0,0,8,0">
+                            <CheckBox.Content>
+                                <TextBlock Text="Можно бронировать"
+                                           FontSize="13"
+                                           Foreground="#495057"/>
+                            </CheckBox.Content>
+                        </CheckBox>
+                        <Button Content="Обновить"
+                                Command="{Binding $parent[ItemsControl].DataContext.SetReservableStatusCommand}"
+                                CommandParameter="{Binding}"
+                                Padding="8,4"
+                                FontSize="12"
+                                Height="28"
+                                Background="#28a745"
+                                Foreground="White"
+                                BorderThickness="0"
+                                CornerRadius="4"/>
+                    </StackPanel>
+                    
+                    <!-- === СООБЩЕНИЕ ОБ ОШИБКЕ/РЕЗУЛЬТАТЕ ОПЕРАЦИИ === -->
+                    <Border Grid.Row="6"
+                            CornerRadius="4"
+                            Padding="8,6"
+                            Margin="0,0,0,8"
+                            Background="{Binding IsSuccessResultOperation, Converter={StaticResource BoolToBrushConverter}}"
+                            IsVisible="{Binding ResultOperation, Converter={StaticResource StringIsNotEmptyToBoolConverter}}">
+                        <TextBlock Text="{Binding ResultOperation}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
+                                   Foreground="White"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"/>
+                    </Border>
+                    
+                    <!-- === РАЗДЕЛИТЕЛЬ === -->
+                    <Border Grid.Row="7" 
+                            BorderThickness="0,1,0,0" 
+                            BorderBrush="#e9ecef" 
+                            Margin="0,8,0,12"/>
+                    
+                    <!-- === КНОПКИ УПРАВЛЕНИЯ КНИГОЙ === -->
+                    <Grid Grid.Row="8" 
+                          ColumnDefinitions="*,*"
+                          ColumnSpacing="8"
+                          Margin="0,0,0,0">
+                        <Button Grid.Column="0"
+                                Content="Изменить"
+                                Command="{Binding $parent[ItemsControl].DataContext.EditBookCommand}"
+                                CommandParameter="{Binding}"
+                                Height="35"
+                                Background="#6c757d"
+                                Foreground="White"
+                                BorderThickness="0"
+                                CornerRadius="4"
+                                FontSize="13"
+                                FontWeight="SemiBold">
+                        </Button>
+                        
+                        <Button Grid.Column="1"
+                                Content="Удалить"
+                                Command="{Binding $parent[ItemsControl].DataContext.DeleteBookCommand}"
+                                CommandParameter="{Binding}"
+                                Height="35"
+                                Background="#dc3545"
+                                Foreground="White"
+                                BorderThickness="0"
+                                CornerRadius="4"
+                                FontSize="13"
+                                FontWeight="SemiBold">
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </ItemsControl.ItemTemplate>
+</ItemsControl>
+</ScrollViewer>
+        
+        <!-- Сообщение об ошибке или пустом результате -->
+        <Border Grid.Row="2" 
+                Background="LightYellow"
+                BorderBrush="Yellow"
+                BorderThickness="1"
+                Padding="10"
+                CornerRadius="5"
+                IsVisible="{Binding HasError}"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Center"
+                Margin="0,20,0,0">
+            <StackPanel>
+                <TextBlock Text="Ошибка поиска" 
+                           FontWeight="Bold"
+                           Foreground="DarkRed"/>
+                <TextBlock Text="{Binding ErrorMessage}" 
+                           TextWrapping="Wrap"
+                           MaxWidth="400"/>
+            </StackPanel>
+        </Border>
+        <!-- Сообщение при отсутствии книг -->
+        <Border Grid.Row="2" 
+                IsVisible="{Binding HasNoBooks}">
+            <StackPanel HorizontalAlignment="Center" 
+                        VerticalAlignment="Center">
+                <TextBlock Text="📚" 
+                           FontSize="48"/>
+                <TextBlock Text="Книги не найдены" 
+                           FontSize="16" 
+                           FontWeight="Bold" 
+                           Margin="0,10,0,0"/>
+                <TextBlock Text="Попробуйте изменить параметры поиска" 
+                           FontSize="12"
+                           Margin="0,5,0,0"/>
+            </StackPanel>
+        </Border>
+        </Grid>
+</UserControl>

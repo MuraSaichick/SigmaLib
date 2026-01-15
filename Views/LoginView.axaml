@@ -1,0 +1,130 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:SigmaLib.ViewModels"
+             mc:Ignorable="d"
+             x:Class="SigmaLib.Views.LoginView"
+             x:DataType="vm:LoginViewModel">
+
+    <Grid Background="White" Width="600">
+    <!-- Основной контейнер -->
+    <Border Margin="32" 
+            Padding="40" 
+            Background="#F8F9FA"
+            CornerRadius="16">
+        <StackPanel Spacing="36" VerticalAlignment="Center">
+            
+            <!-- Заголовок -->
+            <StackPanel Spacing="12" HorizontalAlignment="Center">
+                <TextBlock Text="Вход" 
+                           FontSize="32" 
+                           FontWeight="SemiBold"
+                           Foreground="#1A1A1A"/>
+                <TextBlock Text="Добро пожаловать в SigmaLib"
+                           FontSize="15"
+                           HorizontalAlignment="Center"
+                           Foreground="#666666"/>
+            </StackPanel>
+            
+            <!-- Поля ввода -->
+            <StackPanel Spacing="24">
+                <!-- Email/Телефон -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Gmail или телефон" 
+                               FontSize="14"
+                               Foreground="#333333"
+                               FontWeight="Medium"/>
+                    <Border BorderBrush="#E0E0E0" 
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Background="White"
+                            Padding="4">
+                        <TextBox x:Name="EmailOrPhoneInput"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 Padding="12,10"
+                                 FontSize="14"
+                                 Watermark="Введите gmail или телефон"
+                                 Text="{Binding Login}"/>
+                    </Border>
+                </StackPanel>
+                
+                <!-- Пароль -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Пароль" 
+                               FontSize="14"
+                               Foreground="#333333"
+                               FontWeight="Medium"/>
+                    <Border BorderBrush="#E0E0E0" 
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Background="White"
+                            Padding="4">
+                        <TextBox x:Name="PasswordInput"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 Padding="12,10"
+                                 FontSize="14"
+                                 Watermark="Введите пароль"
+                                 PasswordChar="•"
+                                 Text="{Binding Password}"/>
+                    </Border>
+                    
+                    <!-- Сообщение об ошибке -->
+                    <Border Background="#FFF5F5"
+                            CornerRadius="6"
+                            Padding="12,8"
+                            IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                        <TextBlock Text="{Binding ErrorMessage}"
+                                   Foreground="#DC2626"
+                                   FontSize="13"
+                                   TextWrapping="Wrap"/>
+                    </Border>
+                </StackPanel>
+            </StackPanel>
+            
+            <!-- Кнопка входа -->
+            <Border Background="#2563EB"
+                    CornerRadius="8"
+                    Padding="0">
+                <Button Content="Войти"
+                        HorizontalAlignment="Stretch"
+                        Height="44"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        FontSize="15"
+                        FontWeight="SemiBold"
+                        Foreground="White"
+                        Command="{Binding LoginCommand}"/>
+            </Border>
+            
+            <!-- Регистрация -->
+            <StackPanel HorizontalAlignment="Center" Spacing="8">
+                <TextBlock Text="Нету аккаунта?"
+                           Foreground="#666666"
+                           FontSize="14"/>
+                <Button Content="Зарегистрироваться"
+                        HorizontalAlignment="Center"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        FontSize="14"
+                        Foreground="#2563EB"
+                        FontWeight="Medium"
+                        Padding="12,6"
+                        Command="{Binding GoToRegistrationCommand}">
+                    <Button.Styles>
+                        <Style Selector="Button">
+                            <Setter Property="Cursor" Value="Hand"/>
+                        </Style>
+                        <Style Selector="Button:pointerover">
+                            <Setter Property="Background" Value="#F0F9FF"/>
+                            <Setter Property="Foreground" Value="#1D4ED8"/>
+                        </Style>
+                    </Button.Styles>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Grid>
+</UserControl>

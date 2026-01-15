@@ -1,0 +1,316 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="clr-namespace:SigmaLib.ViewModels"
+			 xmlns:conv="clr-namespace:SigmaLib.Converters"
+			 x:Class="SigmaLib.Views.ReaderManagementView"
+			 x:DataType="vm:ReaderManagementViewModel">
+	<UserControl.Resources>
+		<conv:BoolToStatusConverter x:Key="BoolToStatusConverter"/>
+		<conv:BoolToBrushConverter x:Key="BoolToBrushConverter"/>
+		<conv:StringIsNotEmptyToBoolConverter x:Key="StringIsNotEmptyToBool"/>
+		<conv:DebtToBackgroundConverter x:Key="DebtToBackgroundConverter"/>
+		<conv:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
+	</UserControl.Resources>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<!-- Заголовок -->
+		<Border Grid.Row="0" Background="#4A6FA5" Padding="15">
+			<TextBlock Text="Управление читателями"
+					   FontSize="20"
+					   FontWeight="Bold"
+					   Foreground="White"/>
+		</Border>
+
+		<Border Grid.Row="1" Background="#F8F9FA" Padding="10" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+			<StackPanel Spacing="15">
+				<!-- Строка 1: Основные фильтры -->
+				<Grid ColumnSpacing="10">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="Auto"/>
+					</Grid.ColumnDefinitions>
+
+					<!-- TextBox в первой строке -->
+					<TextBox Grid.Row="0" Grid.Column="0"
+							 Watermark="ID"
+							 Text="{Binding SearchId, StringFormat='{}{0}', TargetNullValue=''}"
+							 VerticalContentAlignment="Center"/>
+
+					<!-- Красный текст во второй строке -->
+					<TextBlock Grid.Row="1" Grid.Column="0"
+							   Text="{Binding ErrorMessageId}"
+							   IsVisible="{Binding ErrorMessageId, Converter={StaticResource StringIsNotEmptyToBool}}"
+							   Foreground="Red"
+							   Margin="5,2,0,0"/>
+
+					<!-- Остальные элементы в первой строке -->
+					<ComboBox Grid.Row="0" Grid.Column="1"
+							  ItemsSource="{Binding DeptOptions}"
+							  SelectedItem="{Binding SearchDept}"
+							  Padding="6"
+							  VerticalAlignment="Center"/>
+					<Button Grid.Row="0" Grid.Column="3"
+							Content="Найти"
+							Width="100"
+							Background="#4A6FA5"
+							Foreground="White"
+							Command="{Binding SearchReaderCommand}"
+							VerticalAlignment="Center"/>
+					<Button Grid.Row="0" Grid.Column="4"
+							Content="Сбросить фильтры"
+							Padding="5"
+							Command="{Binding ResetFiltersCommand}"
+							VerticalAlignment="Center"/>
+				</Grid>
+
+				<!-- Строка 2: Дополнительные фильтры -->
+				<StackPanel Orientation="Horizontal" Spacing="10">
+					<TextBox Width="150"
+							 Watermark="Фамилия"
+							 Text="{Binding SearchLastName}"/>
+					<TextBox Width="150"
+							 Watermark="Имя"
+							 Text="{Binding SearchFirstName}"/>
+					<TextBox Width="150"
+							 Watermark="Отчество"
+							 Text="{Binding SearchSurName}"/>
+					<TextBox Width="200"
+							 Watermark="Email"
+							 Text="{Binding SearchEmail}"/>
+					<TextBox Width="150"
+							 Watermark="Телефон"
+							 Text="{Binding SearchPhone}"/>
+					<TextBox Width="250"
+							 Watermark="Адрес"
+							 Text="{Binding SearchAddress}"/>
+				</StackPanel>
+			</StackPanel>
+		</Border>
+
+		<!-- Если нет пользователей -->
+			<Border Background="#F8F9FA"
+	   Grid.Row="2"
+        CornerRadius="8"
+        Padding="20"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        IsVisible="{Binding Readers.Count, Converter={StaticResource CountToVisibilityConverter}}">
+    <StackPanel HorizontalAlignment="Center" Spacing="10">
+        <TextBlock Text="😕"
+                   FontSize="32"
+                   HorizontalAlignment="Center"/>
+        <TextBlock Text="Читатели не найдены"
+                   FontSize="18"
+                   Foreground="#666"
+                   FontWeight="SemiBold"
+                   HorizontalAlignment="Center"/>
+        <TextBlock Text="Попробуйте изменить параметры поиска"
+                   FontSize="12"
+                   Foreground="#999"
+                   HorizontalAlignment="Center"
+                   TextWrapping="Wrap"
+                   MaxWidth="300"
+                   TextAlignment="Center"/>
+    </StackPanel>
+</Border>
+		<!-- Карточки пользователей -->
+		<ScrollViewer Grid.Row="2" Margin="15">
+			<ItemsControl ItemsSource="{Binding Readers}">
+    <ItemsControl.ItemTemplate>
+        <DataTemplate>
+            <Border BorderBrush="#e0e0e0"
+                    BorderThickness="0 0 0 1"
+                    Padding="15"
+                    Margin="0,0,0,8">
+                <Grid ColumnDefinitions="Auto,1*,Auto,1*,Auto"
+                      RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                      RowSpacing="6"
+                      ColumnSpacing="12">
+
+                    <!-- 1-я строка: ID и Email -->
+                    <StackPanel Grid.Column="0" Grid.Row="0">
+                        <TextBlock Text="ID:"
+                                   FontWeight="Bold"
+                                   Foreground="#555"
+                                   FontSize="12"/>
+                        <TextBlock Text="{Binding Id}"
+                                   Margin="0,2,0,0"
+                                   FontSize="13"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Grid.Row="0">
+                        <TextBlock Text="Email:"
+                                   FontWeight="Bold"
+                                   Foreground="#555"
+                                   FontSize="12"/>
+                        <TextBlock Text="{Binding Email}"
+                                   Margin="0,2,0,0"
+                                   FontSize="13"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+
+                    <!-- 2-я строка: ФИО (занимает 2 колонки) -->
+                    <StackPanel Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Grid.Row="1"
+                                Margin="0,6,0,0">
+                        <TextBlock Text="ФИО:"
+                                   FontWeight="Bold"
+                                   Foreground="#555"
+                                   FontSize="12"/>
+                        <TextBlock Margin="0,2,0,0"
+                                   FontSize="13"
+                                   FontWeight="Medium">
+                            <Run Text="{Binding LastName}"/>
+                            <Run Text=" "/>
+                            <Run Text="{Binding FirstName}"/>
+                            <Run Text=" "/>
+                            <Run Text="{Binding SurName}"/>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <!-- 3-я строка: Телефон и Адрес -->
+                    <StackPanel Grid.Column="0" Grid.Row="2">
+                        <TextBlock Text="Телефон:"
+                                   FontWeight="Bold"
+                                   Foreground="#555"
+                                   FontSize="12"/>
+                        <TextBlock Text="{Binding Phone}"
+                                   Margin="0,2,0,0"
+                                   FontSize="13"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Grid.Row="2">
+                        <TextBlock Text="Адрес:"
+                                   FontWeight="Bold"
+                                   Foreground="#555"
+                                   FontSize="12"/>
+                        <TextBlock Text="{Binding Address}"
+                                   Margin="0,2,0,0"
+                                   TextWrapping="Wrap"
+                                   FontSize="13"/>
+                    </StackPanel>
+
+                    <!-- 4-я строка: Роль и Статус -->
+                    <StackPanel Grid.Column="0" Grid.Row="3">
+                        <TextBlock Text="Роль:"
+                                   FontWeight="Bold"
+                                   Foreground="#555"
+                                   FontSize="12"/>
+                        <TextBlock Text="{Binding Role}"
+                                   Margin="0,2,0,0"
+                                   FontSize="13"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Grid.Row="3">
+                        <TextBlock Text="Статус:"
+                                   FontWeight="Bold"
+                                   Foreground="#555"
+                                   FontSize="12"/>
+                        <TextBlock Text="{Binding IsBlocked, Converter={StaticResource BoolToStatusConverter}}"
+                                   Foreground="{Binding IsBlocked, Converter={StaticResource BoolToBrushConverter}}"
+                                   Margin="0,2,0,0"
+                                   FontSize="13"
+                                   FontWeight="SemiBold"/>
+                    </StackPanel>
+
+                    <!-- Долг (правый блок, занимает 1 колонку) -->
+                    <Border Grid.Column="2"
+                            Grid.Row="0"
+                            Grid.RowSpan="4"
+                            Background="{Binding Dept, Converter={StaticResource DebtToBackgroundConverter}}"
+                            Padding="12,8"
+                            Margin="12,0,0,0"
+                            CornerRadius="6"
+                            VerticalAlignment="Center">
+                        <StackPanel>
+                            <TextBlock Text="Долг:"
+                                       FontWeight="Bold"
+                                       FontSize="11"
+                                       Foreground="White"
+                                       Opacity="0.9"/>
+                            <TextBlock Text="{Binding Dept, StringFormat='Долг: {0} руб.'}"
+                                       FontWeight="Bold"
+                                       FontSize="14"
+                                       Foreground="White"
+                                       Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Кнопка "Посмотреть бронирования" (отдельная строка) -->
+                    <Button Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="4"
+                            Content="📖 Подробнее"
+                            Command="{Binding $parent[ItemsControl].DataContext.CheckReservationsOfReaderCommand}"
+                            CommandParameter="{Binding}"
+                            HorizontalAlignment="Left"
+                            Margin="0,10,0,0"
+                            Padding="12,6"
+                            Background="#4a6fa5"
+                            Foreground="White"
+                            BorderThickness="0"
+                            CornerRadius="4"
+                            FontSize="12">
+                        <Button.Styles>
+                            <Style Selector="Button">
+                                <Setter Property="Cursor" Value="Hand"/>
+                            </Style>
+                            <Style Selector="Button:pointerover">
+                                <Setter Property="Background" Value="#3a5a8a"/>
+                            </Style>
+                            <Style Selector="Button:pressed">
+                                <Setter Property="Background" Value="#2a4a7a"/>
+                            </Style>
+                        </Button.Styles>
+                    </Button>
+
+                    <!-- Кнопка "Погасить долг" (новая кнопка) -->
+                    <Button Grid.Column="2"
+                            Grid.Row="4"
+                            Content="💰 Погасить долг"
+                            Command="{Binding $parent[ItemsControl].DataContext.PayFineCommand}"
+                            CommandParameter="{Binding}"
+                            HorizontalAlignment="Right"
+                            Margin="12,10,0,0"
+                            Padding="12,6"
+                            Background="#27ae60"
+                            Foreground="White"
+                            BorderThickness="0"
+                            CornerRadius="4"
+                            FontSize="12">
+                        <Button.Styles>
+                            <Style Selector="Button">
+                                <Setter Property="Cursor" Value="Hand"/>
+                            </Style>
+                            <Style Selector="Button:pointerover">
+                                <Setter Property="Background" Value="#219653"/>
+                            </Style>
+                            <Style Selector="Button:pressed">
+                                <Setter Property="Background" Value="#1e874b"/>
+                            </Style>
+                        </Button.Styles>
+                    </Button>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </ItemsControl.ItemTemplate>
+</ItemsControl>
+		</ScrollViewer>
+	</Grid>
+</UserControl>

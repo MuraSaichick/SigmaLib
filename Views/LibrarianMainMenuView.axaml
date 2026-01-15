@@ -1,0 +1,67 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:SigmaLib.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SigmaLib.Views.LibrarianMainMenuView"
+             x:DataType="vm:LibrarianMainMenuViewModel">
+
+    <Grid ColumnDefinitions="Auto,*" RowDefinitions="*">
+    <StackPanel Grid.Column="0" 
+            Background="#2D3748" 
+            Width="180"
+            Orientation="Vertical"
+            VerticalAlignment="Stretch">
+    
+    <Button Content="Профиль" 
+            Margin="10,20,10,8" 
+            HorizontalAlignment="Stretch"
+            Padding="8,6"
+            Background="#4A5568"
+            Foreground="White"
+            FontSize="13"
+            FontWeight="SemiBold"
+            BorderThickness="0"
+            Command="{Binding GoToProfile}"/>
+    
+    <Button Content="Каталог" 
+            Margin="10,8" 
+            HorizontalAlignment="Stretch"
+            Padding="8,6"
+            Background="#4A5568"
+            Foreground="White"
+            FontSize="13"
+            FontWeight="SemiBold"
+            BorderThickness="0"
+            Command="{Binding GoToBookManagement}"/>
+    
+    <Button Content="Бронирования" 
+            Margin="10,8" 
+            HorizontalAlignment="Stretch"
+            Padding="8,6"
+            Background="#4A5568"
+            Foreground="White"
+            FontSize="13"
+            FontWeight="SemiBold"
+            BorderThickness="0"
+            Command="{Binding GoToReservationManagementCommand}"/>
+    
+    <Button Content="Читатели" 
+            Margin="10,8,10,20" 
+            HorizontalAlignment="Stretch"
+            Padding="8,6"
+            Background="#4A5568"
+            Foreground="White"
+            FontSize="13"
+            FontWeight="SemiBold"
+            BorderThickness="0"
+            Command="{Binding GoToReaderManagementCommand}"/>
+</StackPanel>
+
+    <ContentControl Grid.Column="1"
+                    Content="{Binding CurrentViewModel}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"/>
+  </Grid>
+</UserControl>

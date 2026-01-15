@@ -1,0 +1,255 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:SigmaLib.ViewModels"
+             mc:Ignorable="d"
+             x:Class="SigmaLib.Views.ProfileView"
+             x:DataType="vm:ProfileViewModel">
+
+    <ScrollViewer>
+    <StackPanel Margin="20" Spacing="15">
+        
+        <!-- Заголовок -->
+        <Border Background="#F0F8FF" CornerRadius="6" Padding="16" BorderBrush="#BBDEFB" BorderThickness="1">
+            <TextBlock Text="Профиль пользователя"
+                       FontSize="20"
+                       FontWeight="SemiBold"
+                       Foreground="#1976D2"
+                       HorizontalAlignment="Center"/>
+        </Border>
+        
+        <!-- Основная информация -->
+        <Border BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="6" Background="White">
+            <StackPanel Margin="16" Spacing="8">
+                <TextBlock Text="Основная информация" 
+                           FontWeight="SemiBold"
+                           FontSize="16"
+                           Foreground="#424242"
+                           Margin="0,0,0,8"/>
+                
+                <Grid ColumnDefinitions="120,1*" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="8">
+                    <TextBlock Grid.Row="0" Grid.Column="0" 
+                               Text="ID:" 
+                               Foreground="#666666"
+                               FontWeight="Medium"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" 
+                               Text="{Binding CurrentUser.Id}" 
+                               Foreground="#212121"/>
+                    
+                    <TextBlock Grid.Row="1" Grid.Column="0" 
+                               Text="Роль:" 
+                               Foreground="#666666"
+                               FontWeight="Medium"/>
+                    <Border Grid.Row="1" Grid.Column="1" 
+                            Background="#E8F5E9" 
+                            CornerRadius="4" 
+                            Padding="4,2"
+                            HorizontalAlignment="Left">
+                        <TextBlock Text="{Binding CurrentUser.Role}" 
+                                   Foreground="#2E7D32"
+                                   FontWeight="Medium"/>
+                    </Border>
+                    
+                    <TextBlock Grid.Row="2" Grid.Column="0" 
+                               Text="Заблокирован:" 
+                               Foreground="#666666"
+                               FontWeight="Medium"/>
+                    <CheckBox Grid.Row="2" Grid.Column="1" 
+                              IsChecked="{Binding CurrentUser.IsBlocked}" 
+                              IsEnabled="False" 
+                              VerticalAlignment="Center"
+                              Margin="0"/>
+                    
+                    <TextBlock Grid.Row="3" Grid.Column="0" 
+                               Text="Долг:" 
+                               Foreground="#666666"
+                               FontWeight="Medium"/>
+                    <Border Grid.Row="3" Grid.Column="1" 
+                            Background="#FFF3E0" 
+                            CornerRadius="4" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left"
+                            BorderBrush="#FF9800"
+                            BorderThickness="1">
+                        <TextBlock Text="{Binding CurrentUser.Dept, StringFormat='{}{0} руб.'}" 
+                                   Foreground="#E65100"
+                                   FontWeight="SemiBold"/>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </Border>
+        
+        <!-- Личные данные -->
+        <Border BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="6" Background="White">
+            <StackPanel Margin="16" Spacing="8">
+                <TextBlock Text="Личные данные" 
+                           FontWeight="SemiBold"
+                           FontSize="16"
+                           Foreground="#424242"
+                           Margin="0,0,0,8"/>
+                
+                <Grid ColumnDefinitions="120,1*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
+                    <TextBlock Grid.Row="0" Grid.Column="0" 
+                               Text="Фамилия:" 
+                               Foreground="#666666"
+                               FontWeight="Medium"/>
+                    <Border Grid.Row="0" Grid.Column="1" 
+                            Background="#F5F5F5" 
+                            CornerRadius="4" 
+                            Padding="8,6">
+                        <TextBlock Text="{Binding CurrentUser.LastName}" 
+                                   Foreground="#212121"/>
+                    </Border>
+                    
+                    <TextBlock Grid.Row="1" Grid.Column="0" 
+                               Text="Имя:" 
+                               Foreground="#666666"
+                               FontWeight="Medium"/>
+                    <Border Grid.Row="1" Grid.Column="1" 
+                            Background="#F5F5F5" 
+                            CornerRadius="4" 
+                            Padding="8,6">
+                        <TextBlock Text="{Binding CurrentUser.FirstName}" 
+                                   Foreground="#212121"/>
+                    </Border>
+                    
+                    <TextBlock Grid.Row="2" Grid.Column="0" 
+                               Text="Отчество:" 
+                               Foreground="#666666"
+                               FontWeight="Medium"/>
+                    <Border Grid.Row="2" Grid.Column="1" 
+                            Background="#F5F5F5" 
+                            CornerRadius="4" 
+                            Padding="8,6">
+                        <TextBlock Text="{Binding CurrentUser.SurName}" 
+                                   Foreground="#212121"/>
+                    </Border>
+                    
+                    <TextBlock Grid.Row="3" Grid.Column="0" 
+                               Text="Email:" 
+                               Foreground="#666666"
+                               FontWeight="Medium"/>
+                    <Border Grid.Row="3" Grid.Column="1" 
+                            Background="#F5F5F5" 
+                            CornerRadius="4" 
+                            Padding="8,6">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <TextBlock Text="📧" FontSize="14"/>
+                            <TextBlock Text="{Binding CurrentUser.Email}" 
+                                       Foreground="#1565C0"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <TextBlock Grid.Row="4" Grid.Column="0" 
+                               Text="Телефон:" 
+                               Foreground="#666666"
+                               FontWeight="Medium"/>
+                    <Border Grid.Row="4" Grid.Column="1" 
+                            Background="#F5F5F5" 
+                            CornerRadius="4" 
+                            Padding="8,6">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <TextBlock Text="📱" FontSize="14"/>
+                            <TextBlock Text="{Binding CurrentUser.Phone}" 
+                                       Foreground="#212121"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <TextBlock Grid.Row="5" Grid.Column="0" 
+                               Text="Адрес:" 
+                               Foreground="#666666"
+                               FontWeight="Medium"/>
+                    <Border Grid.Row="5" Grid.Column="1" 
+                            Background="#F5F5F5" 
+                            CornerRadius="4" 
+                            Padding="8,6">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <TextBlock Text="📍" FontSize="14"/>
+                            <TextBlock Text="{Binding CurrentUser.Address}" 
+                                       Foreground="#212121"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </Border>
+        
+        <!-- Кнопки управления резервациями -->
+        <Border BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="6" Background="White">
+            <StackPanel Margin="16" Spacing="8">
+                <TextBlock Text="Управление резервациями" 
+                           FontWeight="SemiBold"
+                           FontSize="16"
+                           Foreground="#424242"
+                           Margin="0,0,0,8"/>
+                
+                <StackPanel Spacing="10">
+                    <!-- Кнопка для просмотра созданных бронирований -->
+                    <Button Content="Просмотр созданных бронирований"
+                            Command="{Binding GoToCheckReservationsCommand}"
+                            IsVisible="{Binding CurrentUser.Features.CanViewCreatedReservations}"
+                            Padding="12"
+                            Height="40"
+                            Background="#2196F3"
+                            Foreground="White"
+                            BorderThickness="0"
+                            CornerRadius="4"
+                            FontWeight="Medium">
+                      
+                    </Button>
+                    
+                    <!-- Кнопка для просмотра обработанных бронирований -->
+                    <Button Content="Просмотр обработанных бронирований"
+                            Command="{Binding GoToCheckProcessedReservationsCommand}"
+                            IsVisible="{Binding CurrentUser.Features.CanViewProcessedReservations}"
+                            Padding="12"
+                            Height="40"
+                            Background="#4CAF50"
+                            Foreground="White"
+                            BorderThickness="0"
+                            CornerRadius="4"
+                            FontWeight="Medium">
+                      
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        
+        <!-- Кнопки управления -->
+        <Border BorderBrush="#E0E0E0" 
+                BorderThickness="1" 
+                CornerRadius="6"
+                Background="White"
+                IsVisible="{Binding CurrentUser.Features.CanManageThisAccaunt}">
+            <StackPanel Margin="16" Spacing="8">
+                <TextBlock Text="Управление профилем" 
+                           FontWeight="SemiBold"
+                           FontSize="16"
+                           Foreground="#424242"
+                           Margin="0,0,0,8"/>
+                
+                <Border Background="#FFF8E1" CornerRadius="4" Padding="12">
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right"
+                                Spacing="12">
+                        <Button Content="Выйти из аккаунта"
+                                IsVisible="{Binding CurrentUser.Features.CanManageThisAccaunt}"
+                                Padding="12,8"
+                                Background="Transparent"
+                                Foreground="#D32F2F"
+                                BorderBrush="#D32F2F"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                FontWeight="Medium"
+                                Cursor="Hand"
+                                Command="{Binding Logout}">
+                          
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</ScrollViewer>
+</UserControl>

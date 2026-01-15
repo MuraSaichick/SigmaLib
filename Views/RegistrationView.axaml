@@ -1,0 +1,257 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:SigmaLib.ViewModels"
+             x:Class="SigmaLib.Views.RegistrationView"
+             x:DataType="vm:RegistrationViewModel">
+
+    <Grid Background="#F8F9FA">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="20">
+        <Border Background="White" 
+                CornerRadius="12" 
+                Padding="40"
+                MaxWidth="800"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Margin="20"
+                BorderThickness="1"
+                BorderBrush="#E9ECEF">
+            
+            <StackPanel Spacing="30">
+                
+                <!-- Заголовок с иконкой -->
+                <StackPanel Spacing="8" HorizontalAlignment="Center">
+                    <Border Background="#4361EE" 
+                            CornerRadius="50" 
+                            Width="60" 
+                            Height="60"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                        <TextBlock Text="Σ" 
+                                   FontSize="28" 
+                                   Foreground="White"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Text="Регистрация в SigmaLib" 
+                               FontSize="28" 
+                               FontWeight="SemiBold"
+                               Foreground="#212529"/>
+                    <TextBlock Text="Заполните данные для создания аккаунта" 
+                               FontSize="14" 
+                               Foreground="#6C757D"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+                
+                <!-- Личные данные в 2 колонки -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <!-- Левая колонка -->
+                    <StackPanel Grid.Column="0" Spacing="18">
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Фамилия" 
+                                       FontSize="13" 
+                                       FontWeight="Medium"
+                                       Foreground="#495057"/>
+                            <TextBox Watermark="Иванов" 
+                                     Text="{Binding LastName, Mode=TwoWay}"
+                                     FontSize="14"
+                                     Padding="12"
+                                     CornerRadius="8"
+                                     BorderThickness="1"
+                                     BorderBrush="#DEE2E6"
+                                     Background="#F8F9FA"/>
+                        </StackPanel>
+                        
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Имя" 
+                                       FontSize="13" 
+                                       FontWeight="Medium"
+                                       Foreground="#495057"/>
+                            <TextBox Watermark="Иван" 
+                                     Text="{Binding FirstName, Mode=TwoWay}"
+                                     FontSize="14"
+                                     Padding="12"
+                                     CornerRadius="8"
+                                     BorderThickness="1"
+                                     BorderBrush="#DEE2E6"
+                                     Background="#F8F9FA"/>
+                        </StackPanel>
+                        
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Отчество" 
+                                       FontSize="13" 
+                                       FontWeight="Medium"
+                                       Foreground="#495057"/>
+                            <TextBox Watermark="Иванович" 
+                                     Text="{Binding SurName, Mode=TwoWay}"
+                                     FontSize="14"
+                                     Padding="12"
+                                     CornerRadius="8"
+                                     BorderThickness="1"
+                                     BorderBrush="#DEE2E6"
+                                     Background="#F8F9FA"/>
+                        </StackPanel>
+                    </StackPanel>
+                    
+                    <!-- Правая колонка -->
+                    <StackPanel Grid.Column="2" Spacing="18">
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Gmail" 
+                                       FontSize="13" 
+                                       FontWeight="Medium"
+                                       Foreground="#495057"/>
+                            <TextBox Watermark="example@gmail.com"
+                                     Text="{Binding Email, Mode=TwoWay}"
+                                     FontSize="14"
+                                     Padding="12"
+                                     CornerRadius="8"
+                                     BorderThickness="1"
+                                     BorderBrush="#DEE2E6"
+                                     Background="#F8F9FA"/>
+                        </StackPanel>
+                        
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Телефон" 
+                                       FontSize="13" 
+                                       FontWeight="Medium"
+                                       Foreground="#495057"/>
+                            <TextBox Watermark="+3751234567890" 
+                                     Text="{Binding Phone, Mode=TwoWay}"
+                                     FontSize="14"
+                                     Padding="12"
+                                     CornerRadius="8"
+                                     BorderThickness="1"
+                                     BorderBrush="#DEE2E6"
+                                     Background="#F8F9FA"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+                
+                <!-- Адрес -->
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Адрес" 
+                               FontSize="13" 
+                               FontWeight="Medium"
+                               Foreground="#495057"/>
+                    <TextBox Watermark="г. Минск, ул. Примерная, д. 1" 
+                             Text="{Binding Address, Mode=TwoWay}"
+                             FontSize="14"
+                             Padding="12"
+                             CornerRadius="8"
+                             BorderThickness="1"
+                             BorderBrush="#DEE2E6"
+                             Background="#F8F9FA"/>
+                </StackPanel>
+                
+                <!-- Пароли -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Grid.Column="0" Spacing="4">
+                        <TextBlock Text="Пароль" 
+                                   FontSize="13" 
+                                   FontWeight="Medium"
+                                   Foreground="#495057"/>
+                        <TextBox Watermark="Введите пароль" 
+                                 PasswordChar="•"
+                                 Text="{Binding Password, Mode=TwoWay}"
+                                 FontSize="14"
+                                 Padding="12"
+                                 CornerRadius="8"
+                                 BorderThickness="1"
+                                 BorderBrush="#DEE2E6"
+                                 Background="#F8F9FA"/>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Column="2" Spacing="4">
+                        <TextBlock Text="Подтвердите пароль" 
+                                   FontSize="13" 
+                                   FontWeight="Medium"
+                                   Foreground="#495057"/>
+                        <TextBox Watermark="Повторите пароль" 
+                                 PasswordChar="•"
+                                 Text="{Binding ConfirmPassword, Mode=TwoWay}"
+                                 FontSize="14"
+                                 Padding="12"
+                                 CornerRadius="8"
+                                 BorderThickness="1"
+                                 BorderBrush="#DEE2E6"
+                                 Background="#F8F9FA"/>
+                    </StackPanel>
+                </Grid>
+                
+                <!-- Сообщение об ошибке -->
+                <Border CornerRadius="8"
+                        Padding="12"
+                        Background="#FFF5F5"
+                        BorderThickness="1"
+                        BorderBrush="#FECACA"
+                        IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                    <TextBlock Text="{Binding ErrorMessage}"
+                               Foreground="#DC2626"
+                               FontSize="13"
+                               TextWrapping="Wrap"
+                               FontWeight="Medium"/>
+                </Border>
+                
+                <!-- Кнопка регистрации -->
+                <Button Content="Зарегистрироваться" 
+                        HorizontalAlignment="Center" 
+                        Width="220"
+                        Height="44"
+                        FontSize="15"
+                        FontWeight="SemiBold"
+                        CornerRadius="8"
+                        Background="#4361EE"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Command="{Binding RegistrationCommand}">
+                    <Button.Styles>
+                        <Style Selector="Button:hover">
+                            <Setter Property="Background" Value="#3A56D4"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                        </Style>
+                        <Style Selector="Button:pressed">
+                            <Setter Property="Background" Value="#2D4BC8"/>
+                        </Style>
+                    </Button.Styles>
+                </Button>
+                
+                <!-- Ссылка на вход -->
+                <StackPanel HorizontalAlignment="Center" 
+                            Orientation="Horizontal" 
+                            Spacing="6">
+                    <TextBlock Text="Уже есть аккаунт?" 
+                               FontSize="14"
+                               Foreground="#6C757D"/>
+                    <Button Content="Войти в систему" 
+                            FontSize="14"
+                            Foreground="#4361EE"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            FontWeight="SemiBold"
+                            Cursor="Hand"
+                            Command="{Binding GoToLoginCommand}">
+                        <Button.Styles>
+                            <Style Selector="Button:hover">
+                                <Setter Property="Foreground" Value="#3A56D4"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                            </Style>
+                        </Button.Styles>
+                    </Button>
+                </StackPanel>
+                
+            </StackPanel>
+        </Border>
+    </ScrollViewer>
+</Grid>
+</UserControl>

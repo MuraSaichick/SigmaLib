@@ -1,0 +1,205 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:SigmaLib.ViewModels"
+             xmlns:conv="clr-namespace:SigmaLib.Converters"
+             x:Class="SigmaLib.Views.LibraryStatsView"
+             x:DataType="vm:LibraryStatsViewModel">
+  <Border Margin="20" 
+            Background="White"
+            CornerRadius="10"
+            BorderBrush="#E0E0E0"
+            BorderThickness="1"
+            Effect="{StaticResource DropShadowEffect}">
+        
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Заголовок -->
+            <Border Grid.Row="0" 
+                    Background="#2C3E50" 
+                    CornerRadius="8,8,0,0"
+                    Padding="15">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="📊" FontSize="24" Margin="0,0,10,0"/>
+                    <TextBlock Text="Статистика библиотеки" 
+                               FontSize="22" 
+                               FontWeight="Bold" 
+                               Foreground="White"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Основная статистика -->
+            <Grid Grid.Row="1" Margin="0,20,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <!-- Статистика пользователей -->
+                <Border Grid.Row="0" Grid.Column="0" 
+                        Margin="10" 
+                        Background="#F8F9FA" 
+                        CornerRadius="8"
+                        BorderBrush="#E9ECEF"
+                        BorderThickness="1"
+                        Padding="20">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="👥" FontSize="28" Margin="0,0,10,0"/>
+                            <TextBlock Text="{Binding ActiveUsersCount}" 
+                                       FontSize="36" 
+                                       FontWeight="Bold"
+                                       Foreground="#2C3E50"/>
+                        </StackPanel>
+                        <TextBlock Text="Активных пользователей" 
+                                   FontSize="14" 
+                                   Foreground="#6C757D"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,10,0,0"/>
+                        <TextBlock Text="Пользователи с активными бронированиями" 
+                                   FontSize="11" 
+                                   Foreground="#ADB5BD"
+                                   HorizontalAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   MaxWidth="150"
+                                   Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Количество бронирований -->
+                <Border Grid.Row="0" Grid.Column="1" 
+                        Margin="10" 
+                        Background="#F8F9FA" 
+                        CornerRadius="8"
+                        BorderBrush="#E9ECEF"
+                        BorderThickness="1"
+                        Padding="20">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="📅" FontSize="28" Margin="0,0,10,0"/>
+                            <TextBlock Text="{Binding ReservationsCount}" 
+                                       FontSize="36" 
+                                       FontWeight="Bold"
+                                       Foreground="#2C3E50"/>
+                        </StackPanel>
+                        <TextBlock Text="Текущих бронирований" 
+                                   FontSize="14" 
+                                   Foreground="#6C757D"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,10,0,0"/>
+                        <TextBlock Text="Активные бронирования книг" 
+                                   FontSize="11" 
+                                   Foreground="#ADB5BD"
+                                   HorizontalAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   MaxWidth="150"
+                                   Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Количество книг -->
+                <Border Grid.Row="1" Grid.Column="0" 
+                        Margin="10" 
+                        Background="#F8F9FA" 
+                        CornerRadius="8"
+                        BorderBrush="#E9ECEF"
+                        BorderThickness="1"
+                        Padding="20">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="📚" FontSize="28" Margin="0,0,10,0"/>
+                            <TextBlock Text="{Binding BooksCount}" 
+                                       FontSize="36" 
+                                       FontWeight="Bold"
+                                       Foreground="#2C3E50"/>
+                        </StackPanel>
+                        <TextBlock Text="Книг в каталоге" 
+                                   FontSize="14" 
+                                   Foreground="#6C757D"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,10,0,0"/>
+                        <TextBlock Text="Всего доступных книг" 
+                                   FontSize="11" 
+                                   Foreground="#ADB5BD"
+                                   HorizontalAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   MaxWidth="150"
+                                   Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Штрафы -->
+                <Border Grid.Row="1" Grid.Column="1" 
+                        Margin="10" 
+                        Background="#F8F9FA" 
+                        CornerRadius="8"
+                        BorderBrush="#E9ECEF"
+                        BorderThickness="1"
+                        Padding="20">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="💰" FontSize="28" Margin="0,0,10,0"/>
+                            <TextBlock Text="{Binding UnpaidFinesSum, StringFormat={}{0} руб.}" 
+                                       FontSize="36" 
+                                       FontWeight="Bold"
+                                       Foreground="#E74C3C"/>
+                        </StackPanel>
+                        <TextBlock Text="Неоплаченных штрафов" 
+                                   FontSize="14" 
+                                   Foreground="#6C757D"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,10,0,0"/>
+                        <TextBlock Text="Общая сумма штрафов" 
+                                   FontSize="11" 
+                                   Foreground="#ADB5BD"
+                                   HorizontalAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   MaxWidth="150"
+                                   Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+            
+            <!-- Нижняя панель -->
+            <Border Grid.Row="2" 
+                    Background="#F8F9FA" 
+                    CornerRadius="0,0,8,8"
+                    BorderBrush="#E9ECEF"
+                    BorderThickness="1,0,1,1"
+                    Padding="15,10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Text="Последнее обновление: сегодня" 
+                               FontSize="12" 
+                               Foreground="#6C757D"
+                               VerticalAlignment="Center"/>
+                    
+                    <StackPanel Grid.Column="1" 
+                                Orientation="Horizontal" 
+                                HorizontalAlignment="Right">
+                        <TextBlock Text="👨‍💼" FontSize="16" Margin="0,0,5,0"/>
+                        <TextBlock Text="Администратор" 
+                                   FontSize="12" 
+                                   Foreground="#6C757D"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>

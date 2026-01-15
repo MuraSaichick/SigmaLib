@@ -1,0 +1,326 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d"
+			 xmlns:vm="clr-namespace:SigmaLib.ViewModels"
+			 xmlns:local="clr-namespace:SigmaLib.Converters"
+			 x:Class="SigmaLib.Views.UserManagementView"
+			 x:DataType="vm:UserManagementViewModel">
+
+	<UserControl.Resources>
+		<local:BoolToStatusConverter x:Key="BoolToStatusConverter"/>
+		<local:BoolToBrushConverter x:Key="BoolToBrush"/>
+		<local:StringIsNotEmptyToBoolConverter x:Key="StringIsNotEmptyToBool"/>
+		<local:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
+	</UserControl.Resources>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<!-- Заголовок -->
+		<Border Grid.Row="0" Background="#4A6FA5" Padding="15">
+			<TextBlock Text="Управление пользователями"
+					   FontSize="20"
+					   FontWeight="Bold"
+					   Foreground="White"/>
+		</Border>
+
+		<Border Grid.Row="1" Background="#F8F9FA" Padding="10" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+			<StackPanel Spacing="15">
+				<!-- Строка 1: Основные фильтры -->
+				<Grid ColumnSpacing="10">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="Auto"/>
+					</Grid.ColumnDefinitions>
+
+					<!-- TextBox в первой строке -->
+					<TextBox Grid.Row="0" Grid.Column="0"
+							 Watermark="ID"
+							 Text="{Binding SearchId, StringFormat='{}{0}', TargetNullValue=''}"
+							 VerticalContentAlignment="Center"/>
+
+					<!-- Красный текст во второй строке -->
+					<TextBlock Grid.Row="1" Grid.Column="0"
+							   Text="{Binding ErrorMessageId}"
+							   IsVisible="{Binding ErrorMessageId, Converter={StaticResource StringIsNotEmptyToBool}}"
+							   Foreground="Red"
+							   Margin="5,2,0,0"/>
+
+					<!-- Остальные элементы в первой строке -->
+					<ComboBox Grid.Row="0" Grid.Column="1"
+							  ItemsSource="{Binding BlockedStatusOptions}"
+							  SelectedItem="{Binding SearchBlockedStatus}"
+							  Padding="6"
+							  VerticalAlignment="Center"/>
+					<ComboBox Grid.Row="0" Grid.Column="2"
+							  ItemsSource="{Binding RoleOptions}"
+							  SelectedItem="{Binding SearchRole}"
+							  Padding="6"
+							  VerticalAlignment="Center"/>
+					<Button Grid.Row="0" Grid.Column="3"
+							Content="Найти"
+							Width="100"
+							Background="#4A6FA5"
+							Foreground="White"
+							Command="{Binding SearchUserCommand}"
+							VerticalAlignment="Center"/>
+					<Button Grid.Row="0" Grid.Column="4"
+							Content="Сбросить фильтры"
+							Padding="5"
+							Command="{Binding ResetFiltersCommand}"
+							VerticalAlignment="Center"/>
+				</Grid>
+
+				<!-- Строка 2: Дополнительные фильтры -->
+				<StackPanel Orientation="Horizontal" Spacing="10">
+					<TextBox Width="150"
+							 Watermark="Фамилия"
+							 Text="{Binding SearchLastName}"/>
+					<TextBox Width="150"
+							 Watermark="Имя"
+							 Text="{Binding SearchFirstName}"/>
+					<TextBox Width="150"
+							 Watermark="Отчество"
+							 Text="{Binding SearchSurName}"/>
+					<TextBox Width="200"
+							 Watermark="Email"
+							 Text="{Binding SearchEmail}"/>
+					<TextBox Width="150"
+							 Watermark="Телефон"
+							 Text="{Binding SearchPhone}"/>
+					<TextBox Width="250"
+							 Watermark="Адрес"
+							 Text="{Binding SearchAddress}"/>
+
+					<Button Content="Добавить пользователя"
+							Padding="10,5"
+							Background="#28A745"
+							Foreground="White"
+							Command="{Binding AddNewUserCommand}"/>
+				</StackPanel>
+			</StackPanel>
+		</Border>
+		<!-- Если нет пользователей -->
+		<Border Background="#F8F9FA"
+		   Grid.Row="2"
+            CornerRadius="8"
+            Padding="20"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsVisible="{Binding Users.Count, Converter={StaticResource CountToVisibilityConverter}}">
+        <StackPanel HorizontalAlignment="Center" Spacing="10">
+            <TextBlock Text="😕"
+                       FontSize="32"
+                       HorizontalAlignment="Center"/>
+            <TextBlock Text="Пользователи не найдены"
+                       FontSize="18"
+                       Foreground="#666"
+                       FontWeight="SemiBold"
+                       HorizontalAlignment="Center"/>
+            <TextBlock Text="Попробуйте изменить параметры поиска или добавьте нового пользователя"
+                       FontSize="12"
+                       Foreground="#999"
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap"
+                       MaxWidth="300"
+                       TextAlignment="Center"/>
+        </StackPanel>
+    </Border>
+		<!-- Карточки пользователей -->
+		<ScrollViewer Grid.Row="2" Margin="15">
+			<ItemsControl ItemsSource="{Binding Users}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel Orientation="Horizontal"/>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<!-- Карточка пользователя -->
+						<Border Width="250"
+								Height="300"
+								Background="White"
+								BorderBrush="#E0E0E0"
+								BorderThickness="1"
+								CornerRadius="10"
+								Padding="15"
+								Margin="5">
+
+							<!-- Тень карточки -->
+							<Border.Effect>
+								<DropShadowEffect BlurRadius="10" Opacity="0.1"/>
+							</Border.Effect>
+
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="*"/>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
+
+								<!-- Верхняя часть с ФИО и статусом -->
+								<Grid Grid.Row="0" Margin="0,0,0,10">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="*"/>
+										<ColumnDefinition Width="Auto"/>
+									</Grid.ColumnDefinitions>
+
+									<!-- ФИО -->
+									<StackPanel Grid.Column="0">
+										<TextBlock Text="{Binding LastName}"
+												   FontSize="16"
+												   FontWeight="Bold"
+												   Foreground="#333333"/>
+										<TextBlock FontSize="14" Foreground="#666666">
+											<Run Text="{Binding FirstName}"/>
+											<Run Text=" "/>
+											<Run Text="{Binding SurName}"/>
+										</TextBlock>
+									</StackPanel>
+
+									<!-- Индикатор статуса -->
+									<Border Grid.Column="1"
+											Width="10"
+											Height="10"
+											CornerRadius="5"
+											Background="{Binding IsBlocked, Converter={StaticResource BoolToStatusConverter}, ConverterParameter=Color}"
+											ToolTip.Tip="{Binding IsBlocked, Converter={StaticResource BoolToStatusConverter}}"/>
+								</Grid>
+
+								<!-- Информация о пользователе -->
+								<StackPanel Grid.Row="1" Spacing="8" Margin="0,0,0,5">
+									<!-- Контактная информация -->
+									<StackPanel>
+										<TextBlock Text="Контакты:"
+												   FontWeight="SemiBold"
+												   Foreground="#555555"
+												   FontSize="12"/>
+										<StackPanel Margin="10,3,0,0" Spacing="2">
+											<TextBlock FontSize="11">
+												<Run Text="📧 "/>
+												<Run Text="{Binding Email}"
+													 Foreground="#4A6FA5"/>
+											</TextBlock>
+											<TextBlock FontSize="11">
+												<Run Text="📱 "/>
+												<Run Text="{Binding Phone}"/>
+											</TextBlock>
+										</StackPanel>
+									</StackPanel>
+
+									<!-- Адрес -->
+									<StackPanel>
+										<TextBlock Text="Адрес:"
+												   FontWeight="SemiBold"
+												   Foreground="#555555"
+												   FontSize="12"/>
+										<TextBlock Text="{Binding Address}"
+												   Margin="10,3,0,0"
+												   FontSize="10"
+												   TextWrapping="Wrap"
+												   Foreground="#666666"
+												   MaxHeight="40"/>
+									</StackPanel>
+
+									<!-- Роль -->
+									<StackPanel Orientation="Horizontal">
+										<TextBlock Text="Роль:"
+												   FontWeight="SemiBold"
+												   Foreground="#555555"
+												   FontSize="12"/>
+										<Border Background="#E3F2FD"
+												CornerRadius="3"
+												Padding="5,2"
+												HorizontalAlignment="Left"
+												Margin="10,0,0,0">
+											<TextBlock Text="{Binding Role}"
+													   FontSize="10"
+													   FontWeight="SemiBold"
+													   Foreground="#1976D2"/>
+										</Border>
+									</StackPanel>
+								</StackPanel>
+
+								<!-- Сообщение об ошибке -->
+								<Border Grid.Row="2"
+										Background="{Binding IsSuccessResultOperation,  Converter={StaticResource BoolToBrush}}"
+										CornerRadius="4"
+										Padding="6,4"
+										Margin="0,5,0,0"
+										IsVisible="{Binding StringResultOperation,  Converter={StaticResource StringIsNotEmptyToBool}}"
+										Opacity="0.9">
+									<TextBlock Text= "{Binding StringResultOperation}"
+											   Foreground="White"
+											   FontWeight="SemiBold"
+											   FontSize="10"
+											   TextWrapping="Wrap"
+											   HorizontalAlignment="Center"
+											   VerticalAlignment="Center"/>
+								</Border>
+
+								<!-- Кнопки действий -->
+								<Border Grid.Row="3"
+										Background="#F8F9FA"
+										CornerRadius="5"
+										Padding="8"
+										Margin="0,10,0,0">
+									<StackPanel Orientation="Horizontal"
+												HorizontalAlignment="Center"
+												Spacing="5">
+										<Button Content="✏️"
+												Width="32"
+												Height="32"
+												ToolTip.Tip="Изменить"
+												Command="{Binding $parent[ItemsControl].DataContext.EditUserCommand}"
+												CommandParameter="{Binding}"
+												Background="White"
+												BorderBrush="#E0E0E0"
+												BorderThickness="1"
+												FontSize="12"/>
+
+										<Button Content="🗑️"
+												Width="32"
+												Height="32"
+												ToolTip.Tip="Удалить"
+												Command="{Binding $parent[ItemsControl].DataContext.DeleteUserCommand}"
+												CommandParameter="{Binding}"
+												Background="White"
+												BorderBrush="#E0E0E0"
+												BorderThickness="1"
+												FontSize="12"/>
+
+										<Button Content="{Binding IsBlocked, Converter={StaticResource BoolToStatusConverter}, ConverterParameter=Icon}"
+												Width="32"
+												Height="32"
+												ToolTip.Tip="{Binding IsBlocked, Converter={StaticResource BoolToStatusConverter}, ConverterParameter=Tooltip}"
+												Command="{Binding $parent[ItemsControl].DataContext.ToggleUserBlockCommand}"
+												CommandParameter="{Binding}"
+												Background="White"
+												BorderBrush="#E0E0E0"
+												BorderThickness="1"
+												FontSize="12"/>
+									</StackPanel>
+								</Border>
+							</Grid>
+						</Border>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>
+	</Grid>
+</UserControl>

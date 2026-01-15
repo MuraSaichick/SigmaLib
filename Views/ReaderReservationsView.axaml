@@ -1,0 +1,221 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="clr-namespace:SigmaLib.ViewModels"
+			 xmlns:conv="clr-namespace:SigmaLib.Converters"
+			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 x:Class="SigmaLib.Views.ReaderReservationsView"
+			 x:DataType="vm:ReaderReservationsViewModel">
+	<UserControl.Resources>
+		<conv:StatusEqualConverter x:Key="StatusEqualConverter"/>
+		<conv:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
+		<conv:ReservationStatusColorConverter x:Key="StatusColorConverter"/>
+		<conv:StringIsNotEmptyToBoolConverter x:Key="StringIsNotEmptyToBoolConverter"/>
+	</UserControl.Resources>
+
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<!-- Шапка с кнопкой назад - всегда видна -->
+		<Grid Grid.Row="0" Margin="0,0,0,10">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+
+			<Button Grid.Column="0"
+					Content="← Назад"
+					Command="{Binding GoBackCommand}"
+					Padding="12,8"
+					Margin="0,0,16,0"
+					FontSize="14"
+					FontWeight="SemiBold"
+					Background="#f0f0f0"
+					BorderBrush="#ddd"
+					BorderThickness="1"
+					CornerRadius="6"/>
+
+			<TextBlock Grid.Column="1"
+					   Text="Список бронирований"
+					   FontSize="20"
+					   FontWeight="Bold"
+					   VerticalAlignment="Center"
+					   HorizontalAlignment="Center"/>
+		</Grid>
+
+		<!-- Список бронирований с прокруткой -->
+		<ScrollViewer Grid.Row="1">
+			<StackPanel Spacing="16">
+				<ItemsControl ItemsSource="{Binding Reservations}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Border Padding="16" Margin="0,0,0,12"
+									Background="White"
+									BorderBrush="#E8E8E8"
+									BorderThickness="1"
+									CornerRadius="8">
+								<Grid ColumnDefinitions="*,250">
+									<!-- Левая часть - детали бронирования -->
+									<StackPanel Grid.Column="0" Margin="0,0,20,0" Spacing="8">
+										<!-- Заголовок -->
+										<Border Background="#F5F5F5" CornerRadius="4" Padding="8,6">
+											<TextBlock Text="{Binding Id, StringFormat='Бронирование №{0}'}"
+													   FontWeight="SemiBold" FontSize="14"/>
+										</Border>
+
+										<!-- Детали -->
+										<Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+											<!-- ID читателя -->
+											<TextBlock Grid.Column="0" Grid.Row="0"
+													   Text="Читатель:"
+													   Foreground="#666666"
+													   Margin="0,0,12,6"/>
+											<TextBlock Grid.Column="1" Grid.Row="0"
+													   Text="{Binding ReaderId}"
+													   FontWeight="Medium"
+													   Margin="0,0,0,6"/>
+
+											<!-- ID экземпляра -->
+											<TextBlock Grid.Column="0" Grid.Row="1"
+													   Text="Экземпляр книги:"
+													   Foreground="#666666"
+													   Margin="0,0,12,6"/>
+											<TextBlock Grid.Column="1" Grid.Row="1"
+													   Text="{Binding BookCopyId}"
+													   FontWeight="Medium"
+													   Margin="0,0,0,6"/>
+
+											<!-- Дата создания -->
+											<TextBlock Grid.Column="0" Grid.Row="2"
+													   Text="Создано:"
+													   Foreground="#666666"
+													   Margin="0,0,12,6"/>
+											<TextBlock Grid.Column="1" Grid.Row="2"
+													   Text="{Binding CreateAt, StringFormat='dd.MM.yyyy HH:mm'}"
+													   FontWeight="Medium"
+													   Margin="0,0,0,6"/>
+
+											<!-- Забрать до -->
+											<TextBlock Grid.Column="0" Grid.Row="3"
+													   Text="Забрать:"
+													   Foreground="#666666"
+													   Margin="0,0,12,6"/>
+											<TextBlock Grid.Column="1" Grid.Row="3"
+													   Text="{Binding PickUpAt, StringFormat='dd.MM.yyyy'}"
+													   FontWeight="Medium"
+													   Margin="0,0,0,6"/>
+
+											<!-- Вернуть до -->
+											<TextBlock Grid.Column="0" Grid.Row="4"
+													   Text="Вернуть:"
+													   Foreground="#666666"
+													   Margin="0,0,12,6"/>
+											<TextBlock Grid.Column="1" Grid.Row="4"
+													   Text="{Binding ReturnDate, StringFormat='dd.MM.yyyy'}"
+													   FontWeight="Medium"
+													   Margin="0,0,0,6"/>
+											<TextBlock Grid.Column="0" Grid.Row="5"
+													   Text="Вернули книгу:"
+													   IsVisible="{Binding ActualReturnDateText, Converter={StaticResource StringIsNotEmptyToBoolConverter}}"
+													   Foreground="#666666"
+													   Margin="0 0 12 6"/>
+											<TextBlock Grid.Column="1" Grid.Row="5"
+													   Text="{Binding ActualReturnDateText}"
+													   IsVisible="{Binding ActualReturnDateText, Converter={StaticResource StringIsNotEmptyToBoolConverter}}"
+													   FontWeight="Medium"
+													   Margin="0 0 0 6"/>
+										</Grid>
+
+										<!-- Причина отказа -->
+										<Border CornerRadius="4" Padding="10" Margin="0,8,0,0"
+												Background="#FFF5F5"
+												IsVisible="{Binding Reason, Converter={StaticResource StringIsNotEmptyToBoolConverter}}">
+											<StackPanel Spacing="4">
+												<TextBlock Text="Причина отказа"
+														   FontWeight="SemiBold"
+														   FontSize="12"
+														   Foreground="#D32F2F"/>
+												<TextBlock Text="{Binding Reason}"
+														   TextWrapping="Wrap"
+														   Foreground="#B71C1C"/>
+											</StackPanel>
+										</Border>
+									</StackPanel>
+
+									<!-- Правая часть -->
+									<StackPanel Grid.Column="1" Spacing="12">
+										<!-- Статус -->
+										<Border CornerRadius="6" Padding="12,8" HorizontalAlignment="Stretch"
+												Background="{Binding Status, Converter={StaticResource StatusColorConverter}}">
+											<TextBlock Text="{Binding Status}"
+													   Foreground="White"
+													   FontWeight="Bold"
+													   HorizontalAlignment="Center"/>
+										</Border>
+
+										<!-- Штраф -->
+										<Border BorderBrush="#E0E0E0" BorderThickness="1"
+												CornerRadius="6" Padding="12"
+												Background="#F9F9FF">
+											<StackPanel Spacing="6">
+												<TextBlock Text="Штраф за день"
+														   FontWeight="SemiBold"
+														   HorizontalAlignment="Center"
+														   FontSize="12"/>
+												<TextBlock Text="{Binding Fine, StringFormat='{}{0} руб.'}"
+														   FontSize="20"
+														   FontWeight="Bold"
+														   HorizontalAlignment="Center"
+														   Foreground="#1976D2"/>
+											</StackPanel>
+										</Border>
+
+										<!-- Библиотекарь -->
+										<Border CornerRadius="4" Padding="8" Background="#F0F8FF"
+												IsVisible="{Binding RespondedByLibrarianId, Converter={StaticResource CountToVisibilityConverter}}">
+											<StackPanel>
+												<TextBlock Text="Обработал библиотекарь"
+														   FontWeight="SemiBold"
+														   FontSize="11"
+														   Foreground="#2E7D32"/>
+												<TextBlock Text="{Binding RespondedByLibrarianId}"
+														   HorizontalAlignment="Center"
+														   FontWeight="Medium"/>
+											</StackPanel>
+										</Border>
+									</StackPanel>
+								</Grid>
+							</Border>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+
+				<!-- Сообщение, если нет бронирований -->
+				<Border Background="#F5F5F5"
+						CornerRadius="5"
+						Padding="20"
+						HorizontalAlignment="Stretch"
+						VerticalAlignment="Center"
+						Margin="20"
+						IsVisible="{Binding Reservations.Count, Converter={StaticResource CountToVisibilityConverter}}">
+					<StackPanel HorizontalAlignment="Center" Spacing="8">
+						<TextBlock Text="📭"
+								   FontSize="48"
+								   HorizontalAlignment="Center"/>
+						<TextBlock Text="Бронирования не найдены"
+								   FontSize="16"
+								   FontWeight="SemiBold"
+								   HorizontalAlignment="Center"/>
+						<TextBlock Text="Возможно у пользователя еще не было бронирований"
+								   Foreground="Gray"
+								   HorizontalAlignment="Center"/>
+					</StackPanel>
+				</Border>
+			</StackPanel>
+		</ScrollViewer>
+	</Grid>
+</UserControl>
